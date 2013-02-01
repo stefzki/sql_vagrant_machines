@@ -18,8 +18,20 @@ package { 'mysql-server':
 	require => Exec['update'], 
 }
 
-service { 'mysql':
-	ensure  => running,
+file { '/etc/mysql/my.cnf':
+	ensure 	=> present,
+	source 	=> '/vagrant/manifests/my.cnf',
 	require => Package['mysql-server'],
 }
 
+service { 'mysql':
+	ensure    => running,
+	require   => Package['mysql-server'],
+	subscribe => File['/etc/mysql/my.cnf']
+}
+
+exec { 'create-schema':
+	command => '/bin/echo "create schema evaluation; grant all on evaluation.* to root;" | /usr/bin/mysql -u root',
+	path    => '/usr/local/bin/:/bin/:/usr/bin/',
+	require => Service['mysql'],
+}
