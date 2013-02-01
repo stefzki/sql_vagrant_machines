@@ -46,7 +46,7 @@ This is a simple one machine Postresql setup. It uses a standard Ubuntu base-box
 
 Usage:
 ``` 
-cd simple-mysql
+cd simple-postgresql
 vagrant up
 ```
 
